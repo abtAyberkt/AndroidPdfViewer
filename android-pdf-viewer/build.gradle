@@ -1,27 +1,33 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.tools.compileSdk
+    namespace "com.github.barteksc.pdfviewer"
+    compileSdkVersion 35
 
     defaultConfig {
-        minSdkVersion rootProject.tools.minSdk
-        targetSdkVersion rootProject.tools.targetSdk
+        minSdkVersion 21
+        targetSdkVersion 35
         versionCode 1
-        versionName "${rootProject.tools.versionName}"
+        versionName "3.4.0"
     }
 
+    ndkVersion "28.0.13004108"
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.22.1"
+        }
+    }
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
 }
 
 dependencies {
     implementation 'androidx.core:core:1.7.0'
     api 'com.github.mhiew:pdfium-android:1.9.2'
 }
-
-// Maven Publishing
-ext {
-    PUBLISH_GROUP_ID = 'com.github.mhiew'
-    PUBLISH_VERSION = "${rootProject.tools.versionName}"
-    PUBLISH_ARTIFACT_ID = 'android-pdf-viewer'
-}
-
-apply from: "${rootProject.projectDir}/android-pdf-viewer/publish-mavencentral.gradle"
